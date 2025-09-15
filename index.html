@@ -16,40 +16,43 @@
       background: linear-gradient(135deg, #FFF176, #FBC02D);
       width: 100vw;
       height: 100vh;
+      overflow: hidden;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
-      text-align: center;
-      padding: 20px;
+      padding-left: 60px;
     }
 
     .card {
       background: white;
       border-radius: 30px;
-      padding: 50px;
+      padding: 60px 80px;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-      max-width: 600px;
-      width: 100%;
+      max-width: 90%;
+      width: auto;
+      text-align: left;
     }
 
     .uv {
-      font-size: 90px;
+      font-size: 350px;
       font-weight: bold;
       color: #D32F2F;
+      line-height: 1;
     }
 
     .nivel {
-      font-size: 28px;
-      margin-top: 10px;
+      font-size: 64px;
+      margin-top: 20px;
       color: #333;
+      font-weight: 600;
     }
 
     .protector {
-      font-size: 28px;
-      margin-top: 30px;
+      font-size: 64px;
+      margin-top: 40px;
       font-weight: bold;
       color: #1565C0;
-      line-height: 1.5;
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -63,7 +66,7 @@
   <script>
     const lat = -16.5;
     const lon = -68.15;
-    const apiKey = "583f7525d70510836817fa30b575afea"; // Tu API key
+    const apiKey = "583f7525d70510836817fa30b575afea"; // Tu API Key
 
     async function cargarUV() {
       try {
@@ -72,7 +75,7 @@
         const data = await res.json();
         const uv = data.value;
 
-        document.getElementById("uv").innerText = `🌞 UV ${uv.toFixed(2)}`;
+        document.getElementById("uv").innerText = `🌞 ${uv.toFixed(2)}`;
 
         let nivel = "🟢 Bajo";
         if (uv >= 3 && uv <= 5) nivel = "🟡 Moderado";
