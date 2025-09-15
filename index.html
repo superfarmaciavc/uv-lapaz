@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>☀️ Índice UV - La Paz</title>
+  <title>🌞 Índice UV - La Paz</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #FFD54F, #FFB300);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, #FFF176, #FBC02D);
+      width: 100vw;
       height: 100vh;
-      margin: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .left {
+      width: 50%;
+      text-align: center;
     }
 
     .card {
       background: white;
       border-radius: 20px;
+      padding: 40px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      padding: 60px 50px;
-      text-align: center;
-      width: 600px;
+      width: 90%;
+      margin: 0 auto;
     }
 
     .uv {
@@ -33,28 +46,84 @@
     .nivel {
       font-size: 30px;
       margin-top: 10px;
-      color: #444;
+      color: #333;
     }
 
     .protector {
-      font-size: 36px;
+      font-size: 30px;
       margin-top: 25px;
-      font-weight: bold;
       color: #1565C0;
+      font-weight: bold;
+    }
+
+    .right {
+      width: 45%;
+      text-align: center;
+    }
+
+    .right img {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+    }
+
+    .recomendaciones {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 18px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px 20px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    td:first-child {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div id="uv" class="uv">🌞 --</div>
-    <div id="nivel" class="nivel">Cargando...</div>
-    <div class="protector">🧴 Usa protector solar<br>😎 ¡Cuida tu piel!</div>
+  <div class="left">
+    <div class="card">
+      <div id="uv" class="uv">🌞 --</div>
+      <div id="nivel" class="nivel">Cargando...</div>
+      <div class="protector">🧴 Usa protector solar<br>😎 ¡Cuida tu piel!</div>
+    </div>
+
+    <div class="recomendaciones">
+      <h2>🔍 ¿Qué hacer según el índice UV?</h2>
+      <table>
+        <tr>
+          <th>Índice UV</th>
+          <th>Recomendación</th>
+        </tr>
+        <tr><td>0–2</td><td>🟢 Seguro. No se requiere protección especial.</td></tr>
+        <tr><td>3–5</td><td>🟡 Usa gafas de sol y protector solar.</td></tr>
+        <tr><td>6–7</td><td>🟠 Busca sombra al mediodía y usa ropa protectora.</td></tr>
+        <tr><td>8–10</td><td>🔴 Riesgo alto. Evita el sol entre 10 am y 4 pm.</td></tr>
+        <tr><td>11+</td><td>🟣 Peligro extremo. Quédate en interiores si es posible.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="right">
+    <img src="proteccion-uv.png" alt="Protección solar vector">
   </div>
 
   <script>
     const lat = -16.5;
     const lon = -68.15;
-    const apiKey = "583f7525d70510836817fa30b575afea"; // Tu API Key
+    const apiKey = "583f7525d70510836817fa30b575afea"; // tu API key
 
     async function cargarUV() {
       try {
@@ -73,15 +142,12 @@
 
         document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
       } catch (err) {
-        document.getElementById("nivel").innerText = "⚠️ Error al cargar el índice UV";
+        document.getElementById("nivel").innerText = "⚠️ Error al cargar datos";
       }
     }
 
-    // Carga inicial
     cargarUV();
-
-    // Refrescar cada hora (3600000 milisegundos)
-    setInterval(cargarUV, 3600000);
+    setInterval(cargarUV, 3600000); // Cada 1 hora
   </script>
 </body>
 </html>
