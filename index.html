@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Índice UV - La Paz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #FFD54F, #FFB300);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      padding: 30px 40px;
+      text-align: center;
+      width: 400px;
+    }
+
+    .uv {
+      font-size: 70px;
+      font-weight: bold;
+      color: #D32F2F;
+    }
+
+    .nivel {
+      font-size: 28px;
+      color: #333;
+    }
+
+    .protector {
+      font-size: 22px;
+      margin-top: 20px;
+      color: #1565C0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div id="uv" class="uv">🌞 --</div>
+    <div id="nivel" class="nivel">Cargando...</div>
+    <div class="protector">🧴 Usa protector solar</div>
+  </div>
+
+  <script>
+    const lat = -16.5;
+    const lon = -68.15;
+    const apiKey = "583f7525d70510836817fa30b575afea";
+
+    async function cargarUV() {
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        const uv = data.value;
+        document.getElementById("uv").innerText = `🌞 UV ${uv}`;
+
+        let nivel = "Bajo";
+        if (uv >= 3 && uv <= 5) nivel = "Moderado";
+        else if (uv >= 6 && uv <= 7) nivel = "Alto";
+        else if (uv >= 8 && uv <= 10) nivel = "Muy Alto";
+        else if (uv >= 11) nivel = "Extremo";
+
+        document.getElementById("nivel").innerText = `Nivel ${nivel}`;
+      } catch (error) {
+        document.getElementById("nivel").innerText = "No se pudo cargar el UV";
+        document.getElementById("uv").innerText = "🌞 --";
+      }
+    }
+
+    cargarUV();
+  </script>
+</body>
+</html>
+
