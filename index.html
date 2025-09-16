@@ -13,12 +13,12 @@
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #FFE082, #FFCC80);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: flex-end; /* A la derecha */
       padding-right: 5vw;
+      transition: background 0.5s ease;
     }
 
     .container {
@@ -80,12 +80,27 @@
         document.getElementById("uv").innerText = `🌞 ${uv.toFixed(2)}`;
 
         let nivel = "🟢 Bajo";
-        if (uv >= 3 && uv <= 5) nivel = "🟡 Moderado";
-        if (uv >= 6 && uv <= 7) nivel = "🟠 Alto";
-        if (uv >= 8 && uv <= 10) nivel = "🔴 Muy alto";
-        if (uv >= 11) nivel = "🟣 Extremo";
+        let bg = "linear-gradient(135deg, #C8E6C9, #A5D6A7)"; // Verde
+
+        if (uv >= 3 && uv <= 5) {
+          nivel = "🟡 Moderado";
+          bg = "linear-gradient(135deg, #FFF59D, #FFEB3B)";
+        }
+        if (uv >= 6 && uv <= 7) {
+          nivel = "🟠 Alto";
+          bg = "linear-gradient(135deg, #FFCC80, #FFB74D)";
+        }
+        if (uv >= 8 && uv <= 10) {
+          nivel = "🔴 Muy alto";
+          bg = "linear-gradient(135deg, #EF9A9A, #E57373)";
+        }
+        if (uv >= 11) {
+          nivel = "🟣 Extremo";
+          bg = "linear-gradient(135deg, #CE93D8, #BA68C8)";
+        }
 
         document.getElementById("nivel").innerText = nivel;
+        document.body.style.background = bg;
       } catch (err) {
         document.getElementById("nivel").innerText = "⚠️ Error al cargar";
       }
