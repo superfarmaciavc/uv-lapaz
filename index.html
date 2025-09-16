@@ -3,14 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UV Hoy</title>
+  <title>Clima y UV Hoy</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #ffffff; /* Fondo blanco */
@@ -18,47 +12,55 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0;
     }
 
     .container {
       text-align: center;
     }
 
-    .icono-sol {
-      font-size: 160px; /* Emoji grande */
-      margin-bottom: 20px;
+    .icono-clima {
+      font-size: 200px; /* Emoji de clima bien grande */
+      margin-bottom: 40px;
     }
 
     .nivel {
-      font-size: 72px;
+      font-size: 100px; /* Texto grande para nivel */
       font-weight: bold;
       color: #333;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
 
     .uv {
-      font-size: 160px;
+      font-size: 200px; /* Número UV enorme */
       font-weight: bold;
-      color: #D32F2F; /* Rojo fuerte */
-      line-height: 1;
+      color: #D32F2F;
+    }
+
+    .temp {
+      font-size: 120px; /* Temperatura grande */
+      font-weight: bold;
+      color: #1565C0;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div id="iconoClima" class="icono-sol">☀️</div>
+    <div id="iconoClima" class="icono-clima">☀️</div>
     <div id="nivel" class="nivel">Nivel: --</div>
     <div id="uv" class="uv">--</div>
+    <div id="temp" class="temp">--°C</div>
   </div>
 
   <script>
     const lat = -16.5;
     const lon = -68.15;
-    const apiKey = "583f7525d70510836817fa30b575afea"; // Tu API Key
+    const apiKey = "TU_API_KEY"; // Reemplazar con tu API Key de OpenWeatherMap
 
     async function cargarDatos() {
       try {
-        // Llamada UV
+        // Llamada al índice UV
         const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
         const uvRes = await fetch(uvUrl);
         const uvData = await uvRes.json();
@@ -74,13 +76,15 @@
 
         document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
 
-        // Llamada clima actual
-        const climaUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=es`;
+        // Llamada al clima actual
+        const climaUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
         const climaRes = await fetch(climaUrl);
         const climaData = await climaRes.json();
         const estado = climaData.weather[0].main.toLowerCase();
+        const temp = Math.round(climaData.main.temp);
 
-        let emojiClima = "☀️"; // Default
+        // Selección de emoji de clima
+        let emojiClima = "☀️"; 
         if (estado.includes("cloud")) emojiClima = "☁️";
         if (estado.includes("rain")) emojiClima = "🌧️";
         if (estado.includes("thunder")) emojiClima = "⛈️";
@@ -89,6 +93,7 @@
         if (estado.includes("clear")) emojiClima = "☀️";
 
         document.getElementById("iconoClima").innerText = emojiClima;
+        document.getElementById("temp").innerText = `${temp}°C`;
 
       } catch (err) {
         document.getElementById("nivel").innerText = "⚠️ Error al cargar";
