@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UV Hoy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sofia&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Sofia', cursive;
       background: #ffffff; /* Fondo blanco fijo */
       min-height: 100vh;
       display: flex;
@@ -20,43 +21,32 @@
       padding: 40px;
     }
 
-    .icono-sol {
-      font-size: 180px; /* Emoji sol grande */
-      margin-bottom: 20px;
-    }
-
     .uv {
-      font-size: 200px;
+      font-size: 400px; /* Número enorme */
       font-weight: bold;
       color: #D32F2F;
       line-height: 1;
-      margin-bottom: 40px;
+      margin-bottom: 60px;
     }
 
     .nivel {
-      font-size: 80px; /* Más grande para mejor visibilidad */
+      font-size: 200px; /* Semáforo más grande */
       font-weight: bold;
       color: #333;
     }
 
     @media (max-width: 768px) {
-      .icono-sol {
-        font-size: 100px;
-      }
-
       .uv {
-        font-size: 120px;
+        font-size: 200px;
       }
-
       .nivel {
-        font-size: 48px;
+        font-size: 100px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div id="iconoSol" class="icono-sol">☀️</div>
     <div id="uv" class="uv">--</div>
     <div id="nivel" class="nivel">Cargando...</div>
   </div>
