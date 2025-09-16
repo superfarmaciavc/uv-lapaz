@@ -77,4 +77,20 @@
         document.getElementById("uv").innerText = uv.toFixed(2);
 
         // Nivel UV con semáforo
-        let
+        let nivel = "🔵 Bajo";
+        if (uv >= 3 && uv <= 5) nivel = "🟢 Moderado";
+        if (uv >= 6 && uv <= 7) nivel = "🟡 Alto";
+        if (uv >= 8 && uv <= 10) nivel = "🟠 Muy alto";
+        if (uv >= 11) nivel = "🔴 Extremo";
+
+        document.getElementById("nivel").innerText = nivel;
+      } catch (err) {
+        document.getElementById("nivel").innerText = "⚠️ Error al cargar";
+      }
+    }
+
+    cargarUV();
+    setInterval(cargarUV, 3600000); // Actualiza cada hora
+  </script>
+</body>
+</html>
