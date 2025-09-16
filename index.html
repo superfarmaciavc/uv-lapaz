@@ -25,7 +25,7 @@
     }
 
     .icono-sol {
-      font-size: 160px; /* Sol grande */
+      font-size: 160px; /* Emoji grande */
       margin-bottom: 20px;
     }
 
@@ -46,7 +46,7 @@
 </head>
 <body>
   <div class="container">
-    <div class="icono-sol">☀️</div>
+    <div id="iconoClima" class="icono-sol">☀️</div>
     <div id="nivel" class="nivel">Nivel: --</div>
     <div id="uv" class="uv">--</div>
   </div>
@@ -56,12 +56,13 @@
     const lon = -68.15;
     const apiKey = "583f7525d70510836817fa30b575afea"; // Tu API Key
 
-    async function cargarUV() {
+    async function cargarDatos() {
       try {
-        const url = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        const uv = data.value;
+        // Llamada UV
+        const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+        const uvRes = await fetch(uvUrl);
+        const uvData = await uvRes.json();
+        const uv = uvData.value;
 
         document.getElementById("uv").innerText = uv.toFixed(2);
 
@@ -72,13 +73,30 @@
         if (uv >= 11) nivel = "🔴 Extremo";
 
         document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
+
+        // Llamada clima actual
+        const climaUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=es`;
+        const climaRes = await fetch(climaUrl);
+        const climaData = await climaRes.json();
+        const estado = climaData.weather[0].main.toLowerCase();
+
+        let emojiClima = "☀️"; // Default
+        if (estado.includes("cloud")) emojiClima = "☁️";
+        if (estado.includes("rain")) emojiClima = "🌧️";
+        if (estado.includes("thunder")) emojiClima = "⛈️";
+        if (estado.includes("snow")) emojiClima = "❄️";
+        if (estado.includes("fog") || estado.includes("mist")) emojiClima = "🌫️";
+        if (estado.includes("clear")) emojiClima = "☀️";
+
+        document.getElementById("iconoClima").innerText = emojiClima;
+
       } catch (err) {
         document.getElementById("nivel").innerText = "⚠️ Error al cargar";
       }
     }
 
-    cargarUV();
-    setInterval(cargarUV, 3600000); // Actualiza cada hora
+    cargarDatos();
+    setInterval(cargarDatos, 3600000); // Actualiza cada hora
   </script>
 </body>
 </html>
