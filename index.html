@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Intensidad solar - Hoy</title>
+  <title>UV Hoy</title>
   <style>
     * {
       margin: 0;
@@ -17,23 +17,16 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      padding-left: 5vw;
+      justify-content: flex-end; /* A la derecha */
+      padding-right: 5vw;
     }
 
     .container {
-      width: 50vw;
+      text-align: center;
       background: white;
       border-radius: 24px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       padding: 60px;
-    }
-
-    .titulo {
-      font-size: 36px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 40px;
     }
 
     .uv {
@@ -50,14 +43,6 @@
       font-weight: 600;
     }
 
-    .protector {
-      font-size: 40px;
-      margin-top: 30px;
-      font-weight: bold;
-      color: #1565C0;
-      line-height: 1.4;
-    }
-
     @media (max-width: 768px) {
       .container {
         width: 90vw;
@@ -68,23 +53,16 @@
         font-size: 120px;
       }
 
-      .nivel,
-      .protector {
+      .nivel {
         font-size: 32px;
-      }
-
-      .titulo {
-        font-size: 28px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="titulo">☀️ Intensidad de los rayos del sol para el día de hoy</div>
     <div id="uv" class="uv">🌞 --</div>
     <div id="nivel" class="nivel">Cargando...</div>
-    <div class="protector">🧴 Usa protector solar<br>😎 ¡Cuida tu piel!</div>
   </div>
 
   <script>
@@ -107,7 +85,7 @@
         if (uv >= 8 && uv <= 10) nivel = "🔴 Muy alto";
         if (uv >= 11) nivel = "🟣 Extremo";
 
-        document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
+        document.getElementById("nivel").innerText = nivel;
       } catch (err) {
         document.getElementById("nivel").innerText = "⚠️ Error al cargar";
       }
