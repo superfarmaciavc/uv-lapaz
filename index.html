@@ -1,46 +1,98 @@
-<script>
-  const lat = -16.5;
-  const lon = -68.15;
-  const apiKey = "TU_API_KEY"; // reemplazar
-
-  async function cargarDatos() {
-    try {
-      const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
-      const res = await fetch(url);
-      const data = await res.json();
-
-      // UV Index
-      const uv = data.current.uvi;
-      document.getElementById("uv").innerText = uv.toFixed(2);
-
-      let nivel = "🔵 Bajo";
-      if (uv >= 3 && uv <= 5) nivel = "🟢 Moderado";
-      if (uv >= 6 && uv <= 7) nivel = "🟡 Alto";
-      if (uv >= 8 && uv <= 10) nivel = "🟠 Muy alto";
-      if (uv >= 11) nivel = "🔴 Extremo";
-
-      document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
-
-      // Clima
-      const estado = data.current.weather[0].main.toLowerCase();
-      const temp = Math.round(data.current.temp);
-
-      let emojiClima = "☀️";
-      if (estado.includes("cloud")) emojiClima = "☁️";
-      if (estado.includes("rain")) emojiClima = "🌧️";
-      if (estado.includes("thunder")) emojiClima = "⛈️";
-      if (estado.includes("snow")) emojiClima = "❄️";
-      if (estado.includes("fog") || estado.includes("mist")) emojiClima = "🌫️";
-      if (estado.includes("clear")) emojiClima = "☀️";
-
-      document.getElementById("iconoClima").innerText = emojiClima;
-      document.getElementById("temp").innerText = `${temp}°C`;
-
-    } catch (err) {
-      document.getElementById("nivel").innerText = "⚠️ Error al cargar";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UV Hoy</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
     }
-  }
+    .container {
+      text-align: center;
+    }
+    .icono-clima {
+      font-size: 200px;
+      margin-bottom: 40px;
+    }
+    .nivel {
+      font-size: 100px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .uv {
+      font-size: 200px;
+      font-weight: bold;
+      color: #D32F2F;
+    }
+    .temp {
+      font-size: 120px;
+      font-weight: bold;
+      color: #1565C0;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="iconoClima" class="icono-clima">☀️</div>
+    <div id="nivel" class="nivel">Nivel: --</div>
+    <div id="uv" class="uv">--</div>
+    <div id="temp" class="temp">--°C</div>
+  </div>
 
-  cargarDatos();
-  setInterval(cargarDatos, 3600000);
-</script>
+  <script>
+    const lat = -16.5;
+    const lon = -68.15;
+    const apiKey = "TU_API_KEY"; // pon aquí tu API key válida de One Call 3.0
+
+    async function cargarDatos() {
+      try {
+        const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
+        const res = await fetch(url);
+        const data = await res.json();
+
+        // Índice UV
+        const uv = data.current.uvi;
+        document.getElementById("uv").innerText = uv.toFixed(2);
+
+        let nivel = "🔵 Bajo";
+        if (uv >= 3 && uv <= 5) nivel = "🟢 Moderado";
+        if (uv >= 6 && uv <= 7) nivel = "🟡 Alto";
+        if (uv >= 8 && uv <= 10) nivel = "🟠 Muy alto";
+        if (uv >= 11) nivel = "🔴 Extremo";
+
+        document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
+
+        // Clima y temperatura
+        const estado = data.current.weather[0].main.toLowerCase();
+        const temp = Math.round(data.current.temp);
+
+        let emojiClima = "☀️";
+        if (estado.includes("cloud")) emojiClima = "☁️";
+        if (estado.includes("rain")) emojiClima = "🌧️";
+        if (estado.includes("thunder")) emojiClima = "⛈️";
+        if (estado.includes("snow")) emojiClima = "❄️";
+        if (estado.includes("fog") || estado.includes("mist")) emojiClima = "🌫️";
+        if (estado.includes("clear")) emojiClima = "☀️";
+
+        document.getElementById("iconoClima").innerText = emojiClima;
+        document.getElementById("temp").innerText = `${temp}°C`;
+
+      } catch (err) {
+        document.getElementById("nivel").innerText = "⚠️ Error al cargar";
+      }
+    }
+
+    cargarDatos();
+    setInterval(cargarDatos, 3600000); // actualiza cada hora
+  </script>
+</body>
+</html>
