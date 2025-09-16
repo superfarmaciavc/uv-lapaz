@@ -5,94 +5,109 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UV Hoy</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #ffffff;
       min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin: 0;
+      justify-content: flex-end; /* A la derecha */
+      padding-right: 5vw;
+      transition: background 0.5s ease;
     }
+
     .container {
       text-align: center;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      padding: 60px;
     }
-    .icono-clima {
-      font-size: 200px;
-      margin-bottom: 40px;
-    }
-    .nivel {
-      font-size: 100px;
-      font-weight: bold;
-      margin-bottom: 30px;
-      color: #333;
-    }
+
     .uv {
-      font-size: 200px;
+      font-size: 220px;
       font-weight: bold;
       color: #D32F2F;
+      line-height: 1;
     }
-    .temp {
-      font-size: 120px;
-      font-weight: bold;
-      color: #1565C0;
-      margin-top: 30px;
+
+    .nivel {
+      font-size: 48px;
+      margin-top: 20px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 90vw;
+        padding: 30px;
+      }
+
+      .uv {
+        font-size: 120px;
+      }
+
+      .nivel {
+        font-size: 32px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div id="iconoClima" class="icono-clima">☀️</div>
-    <div id="nivel" class="nivel">Nivel: --</div>
-    <div id="uv" class="uv">--</div>
-    <div id="temp" class="temp">--°C</div>
+    <div id="uv" class="uv">🌞 --</div>
+    <div id="nivel" class="nivel">Cargando...</div>
   </div>
 
   <script>
     const lat = -16.5;
     const lon = -68.15;
-    const apiKey = "TU_API_KEY"; // pon aquí tu API key válida de One Call 3.0
+    const apiKey = "583f7525d70510836817fa30b575afea"; // Tu API Key
 
-    async function cargarDatos() {
+    async function cargarUV() {
       try {
-        const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=es`;
+        const url = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`;
         const res = await fetch(url);
         const data = await res.json();
+        const uv = data.value;
 
-        // Índice UV
-        const uv = data.current.uvi;
-        document.getElementById("uv").innerText = uv.toFixed(2);
+        document.getElementById("uv").innerText = `🌞 ${uv.toFixed(2)}`;
 
-        let nivel = "🔵 Bajo";
-        if (uv >= 3 && uv <= 5) nivel = "🟢 Moderado";
-        if (uv >= 6 && uv <= 7) nivel = "🟡 Alto";
-        if (uv >= 8 && uv <= 10) nivel = "🟠 Muy alto";
-        if (uv >= 11) nivel = "🔴 Extremo";
+        let nivel = "🟢 Bajo";
+        let bg = "linear-gradient(135deg, #C8E6C9, #A5D6A7)"; // Verde
 
-        document.getElementById("nivel").innerText = `Nivel: ${nivel}`;
+        if (uv >= 3 && uv <= 5) {
+          nivel = "🟡 Moderado";
+          bg = "linear-gradient(135deg, #FFF59D, #FFEB3B)";
+        }
+        if (uv >= 6 && uv <= 7) {
+          nivel = "🟠 Alto";
+          bg = "linear-gradient(135deg, #FFCC80, #FFB74D)";
+        }
+        if (uv >= 8 && uv <= 10) {
+          nivel = "🔴 Muy alto";
+          bg = "linear-gradient(135deg, #EF9A9A, #E57373)";
+        }
+        if (uv >= 11) {
+          nivel = "🟣 Extremo";
+          bg = "linear-gradient(135deg, #CE93D8, #BA68C8)";
+        }
 
-        // Clima y temperatura
-        const estado = data.current.weather[0].main.toLowerCase();
-        const temp = Math.round(data.current.temp);
-
-        let emojiClima = "☀️";
-        if (estado.includes("cloud")) emojiClima = "☁️";
-        if (estado.includes("rain")) emojiClima = "🌧️";
-        if (estado.includes("thunder")) emojiClima = "⛈️";
-        if (estado.includes("snow")) emojiClima = "❄️";
-        if (estado.includes("fog") || estado.includes("mist")) emojiClima = "🌫️";
-        if (estado.includes("clear")) emojiClima = "☀️";
-
-        document.getElementById("iconoClima").innerText = emojiClima;
-        document.getElementById("temp").innerText = `${temp}°C`;
-
+        document.getElementById("nivel").innerText = nivel;
+        document.body.style.background = bg;
       } catch (err) {
         document.getElementById("nivel").innerText = "⚠️ Error al cargar";
       }
     }
 
-    cargarDatos();
-    setInterval(cargarDatos, 3600000); // actualiza cada hora
+    cargarUV();
+    setInterval(cargarUV, 3600000); // Actualiza cada hora
   </script>
 </body>
 </html>
